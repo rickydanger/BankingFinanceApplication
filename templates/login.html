@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content1 %}
+    <center>
+        <h3>Login</h3>
+    </center>
+       <form method="post">
+            <table class="center">
+                <tr>
+                    <td><label for="username">Username</label></td>
+                    <td><input name="username" id="username" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password</label></td>
+                    <td> <input type="password" name="password" id="password" required></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type="submit" value="Login"></td>
+                </tr>
+
+            </table>
+        </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p style="color:red;">{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endblock %}

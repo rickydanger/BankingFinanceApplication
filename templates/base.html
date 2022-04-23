@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0px;
+                font-size: 120%;
+            }
+            table.center {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="0" width="100%" height="100%" style="border:solid 1px #000000">
+             <tr>
+                <td colspan = "1" bgcolor = "#6875AF">
+                    <center>
+                        <h5><font face="Times New Roman" size="6px" color="#FFFFFF">GRJ Credit Union</font></h5>
+                    </center>
+                </td>
+             </tr>
+             <tr valign = "top">
+                <td style="padding:40px" bgcolor = "#C2CDFF" width = "100%" height = "100%">
+                   {% block content1 %}{% endblock %}
+                </td>
+
+             </tr>
+             <tr>
+                <td colspan = "1" bgcolor = "#6875AF">
+                   <center>
+                       {% block footer %}
+                           {% if name %}
+                                <h5><font face="Times New Roman" color="#FFFFFF"> {{ name }}</h5>
+                           {% endif %}
+                       {% endblock %}
+                   </center>
+                </td>
+             </tr>
+      </table>
+    </body>
+</html>
