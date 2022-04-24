@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+{% block content1 %}
+<center>
+    <h2>Account Lookup</h2>
+    <p>Enter the first name, last name, and the date of birth of the account holder.</p>
+    <form method="post">
+            <table class="center">
+                <tr>
+                    <td><label for="fname">First Name</label></td>
+                    <td><input name="fname" id="fname"></td>
+                </tr>
+                <tr>
+                    <td><label for="lname">Last Name</label></td>
+                    <td><input name="lname" id="lname"></td>
+                </tr>
+                <tr>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><input name="dob" id="dob"></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type="submit" value="Lookup Account"></td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <p>Or enter the account holders account number.</p>
+            <table class="center">
+                <tr>
+                    <td><label for="accnumber">Account Number</label></td>
+                    <td><input name="accnumber" id="accnumber"></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type="submit" value="Lookup Account"></td>
+                </tr>
+            </table>
+        </form>
+</center>
+{% endblock %}

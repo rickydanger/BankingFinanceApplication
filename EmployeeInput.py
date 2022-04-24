@@ -1,6 +1,7 @@
 from flask import Flask, url_for, redirect, render_template, request, flash
 import datetime
 
+from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
 
 app = Flask(__name__)
@@ -17,20 +18,29 @@ def login():
         auth_info = EmployeeAuthentication.auth(request.form["username"], request.form["password"])
 
         if auth_info[0]:
-            return redirect(url_for("home"))
+            return redirect(url_for("accountlookup"))
         else:
             flash(auth_info[1])
 
-    return render_template('login.html', name=update_date())
+    return render_template('login.html')
 
-@app.route('/home/')
-def home():
-    return render_template('home.html', name=update_date())
+@app.route('/accountlookup/', methods=['GET','POST'])
+def accountlookup():
+    if request.method == "POST":
+        fname = request.form["fname"]
+        lname = request.form["lname"]
+        dob = request.form["dob"]
+        if fname != '' | lname | dob != '':
+            accountname = request.form["fname"] + " " + request.form["lname"]
+            a = AccountDatabase.getNumber(accountname, request.form["dob"])
+            print(a)
+            return redirect(url_for("account"))
+    return render_template('account_look_up.html')
 
 
-def update_date():
-    date = datetime.datetime.now().strftime("Date: %d/%m/%Y Time: %H:%M:%S")
-    return date
+@app.route('/account/', methods=['GET','POST'])
+def account():
+    return render_template('account.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
