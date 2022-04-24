@@ -30,11 +30,11 @@ def accountlookup():
         fname = request.form["fname"]
         lname = request.form["lname"]
         dob = request.form["dob"]
-        if fname != '' | lname | dob != '':
-            accountname = request.form["fname"] + " " + request.form["lname"]
-            a = AccountDatabase.getNumber(accountname, request.form["dob"])
-            print(a)
+        if fname != '' and lname != '' and dob != '':
+            accountname = fname + " " + lname
+            result = AccountDatabase.getNumber(accountname, dob)
             return redirect(url_for("account"))
+
     return render_template('account_look_up.html')
 
 
