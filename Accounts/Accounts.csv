@@ -1,0 +1,4 @@
+accountNumber,accountHolderName,accountHolderDOB,accountType,accountBalance,accountAverageBalance,accountHistory
+100001,John Menter,01/01/1990,1,10845.00,10845.00,04/23;In Bank Deposit;500.0;10845.0:04/23;In Bank Deposit;10345.00;10345.00
+100002,Garick Macas,02/02/1991,0,12345.00,0,04/23;In Bank Deposit;12345.00;12345.00
+100003,Gunuk Park,03/03/1992,1,11111.00,0,04/23;In Bank Deposit;11111.00;11111.00
