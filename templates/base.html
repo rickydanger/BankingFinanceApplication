@@ -34,13 +34,22 @@
                 <td colspan = "1" bgcolor = "#6875AF">
                    <center>
                        <font face="Times New Roman" size="6px" color="#FFFFFF">
-                           <div class="time">
+                           <div class="date">
+                               <h5>
+                               <span id="dayname">Day</span>
+                               <span>&emsp;</span>
+                               <span id="month">Month</span>
+                               <span id="daynum">00</span>
+                               <span>,</span>
+                               <span id="year">Year</span>
+                               <span>&emsp;</span>
                                <span id="hour">00</span>
                                <span>:</span>
                                <span id="minutes">00</span>
                                <span>:</span>
                                <span id="seconds">00</span>
                                <span id="period">AM</span>
+                               </h5>
                            </div>
                        </font>
                    </center>
@@ -51,7 +60,11 @@
         <script type="text/javascript">
             function updateClock(){
                 var now = new Date();
-                var hou = now.getHours(),
+                var dname = now.getDay(),
+                    mo = now.getMonth(),
+                    dnum = now.getDate(),
+                    yr = now.getFullYear(),
+                    hou = now.getHours(),
                     min = now.getMinutes(),
                     sec = now.getSeconds(),
                     pe = "AM";
@@ -64,8 +77,10 @@
                         pe = "PM"
                     }
 
-                    var ids = ["hour", "minutes", "seconds", "period"];
-                    var values = [hou, min, sec, pe];
+                    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    var week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var ids = ["dayname", "month", "daynum", "year", "hour", "minutes", "seconds", "period"];
+                    var values = [week[dname], months[mo], dnum, yr, hou, min, sec, pe];
                     for(var i = 0; i < ids.length; i++)
                     document.getElementById(ids[i]).firstChild.nodeValue = values[i];
             }
