@@ -10,45 +10,23 @@ checkingRate = 1.25 #1.25% interest rate for checking Accounts
 daysInMonth = 30 #days in the month will need to be updated after the interest has been paid each month
 now = datetime.now()
 class AccountDatabase:
-	def getType(accountNumber):
-		"""This function will take the accountNumber(column 1) and return the integer(column 4) reprisenting either '1' Savings account or '0' Checking account
-			for use by InterestPayment to determine the correct interest rate"""
-		accountType = -1
-		with open(databasePath, newline='') as csvfile:
-			database = csv.DictReader(csvfile, delimiter=',')
-			for row in database:
-				if accountNumber == row['accountNumber']:
-					accountType = row['accountType']
-		if accountType == -1:
-			print("This is an error, Needs to be corrected")
-		else:
-			return accountType
-
 	def getNumber(accountName,accountDOB):
 		"""This function will take the accountHolderName(column 2) and accountHolderDOB(column 3) and return the accountNumber(column 1) for use by EmployeeInput to allow access without the account Number"""
-		accountNumber = -1
-		error = None
 		with open(databasePath, newline='') as csvfile:
 			database = csv.DictReader(csvfile, delimiter=',')
 			for row in database:
 				if (accountName == row['accountHolderName']) and (accountDOB == row['accountHolderDOB']):
-					accountNumber = row['accountNumber']
-		if accountNumber == -1:
-			error = "This is an error, Alert employee that holder name date of birth pair does not match an account"
-		return accountNumber, error
+					return row['accountNumber'], None
+		return -1, "Account Holder Name and Date of Birth pair does not match any account in the system"
 
 	def getHolder(accountNumber):
 		"""This function will take the accountNumber(column 1) and return the accountHolderName(column 2) to the EmployeeInput to be displayed to the employee"""
-		accountName = -1
-		error = None
 		with open(databasePath, newline='') as csvfile:
 			database = csv.DictReader(csvfile, delimiter=',')
 			for row in database:
 				if accountNumber == row['accountNumber']:
-					accountName = row['accountHolderName']
-		if accountName == -1:
-			error = "This is an error, Alert employee that account number does not exist"
-		return accountName, error
+					return row['accountHolderName'], None
+		return -1, "Account number does not match any account in the system"
 
 	def getBalance(accountNumber):
 		"""This function will take the accountNumber(column 1) and return the currentBalance(column 5) of the account"""
@@ -90,6 +68,7 @@ class AccountDatabase:
 
 	def makeWithdrawal(accountNumber,withdrawalAmount):
 		"""This function will take the accountNumber(column 1) and withdrawalAmount, It will check for sufficient funds then subtract the depositAmount from the currentBalance	record the transaction in the accountHistory(Column 7) then return the currentBalance(column 5) of the account"""
+		error = None
 		if float(getBalance(accountNumber)) >= withdrawalAmount:
 			print("This account has the required funds")
 			newBalance = float(getBalance(accountNumber)) - withdrawalAmount
@@ -109,8 +88,8 @@ class AccountDatabase:
 					else:
 						print(row, end ='')
 		else:
-			print("This account does not have the required funds")
-		#Update daysInMonth for the averageBalance updates
+			error = "This account does not have the required funds"
+		return getBalance(accountNumber), error
 
 	#Interest Functions
 
@@ -154,7 +133,9 @@ class AccountDatabase:
 						newHistory + data[6], end ='')
 				else:
 					print(row, end ='')
-
+	#Update daysInMonth for the averageBalance updates
+	
+	
 	#testing
 
 	#makeInterestPayments()

@@ -1,5 +1,6 @@
 from flask import Flask, url_for, redirect, render_template, request, flash
 import datetime
+import string
 
 from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
@@ -40,7 +41,9 @@ def accountlookup():
             error = data[1]
             if error == None:
                 return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
-        if accountnumber != '':
+        elif (accountnumber !='' and len(accountnumber) != 6):
+            error = "account number is not the correct length"
+        elif (accountnumber != ''):
             data = AccountDatabase.getHolder(accountnumber)
             accountname = data[0]
             error = data[1]
