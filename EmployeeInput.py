@@ -1,11 +1,12 @@
-from flask import Flask, url_for, redirect, render_template, request, flash
+from flask import Flask, url_for, redirect, render_template, request, flash, session
+#from flask.ext.login import LoginManager
 import datetime
 import string
 
 from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
 
-app = Flask(__name__)
+app = Flask('GRJ Credit Union')
 app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%r7kw""YC+zh' \
                  b'T"CQRE]r;K;&#a2fe9vf\\%#)8L;8gd^7FU!eGQ,$!%azwAy>Td&nsJ.a"a'
 
@@ -27,7 +28,9 @@ def login():
 
 @app.route('/accountlookup/', methods=['GET','POST'])
 def accountlookup():
-    if request.method == "POST":
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    elif request.method == "POST":
         fname = request.form["fname"]
         lname = request.form["lname"]
         dob = request.form["dob"]
@@ -57,10 +60,13 @@ def accountlookup():
 
 @app.route('/accountprompt/', methods=['GET','POST'])
 def accountprompt():
-    accountname = request.args['name']
-    accountnumber = request.args['number']
-    if request.method == "POST":
-        return redirect(url_for('.account', name=accountname, number=accountnumber))
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    else:
+        accountname = request.args['name']
+        accountnumber = request.args['number']
+        if request.method == "POST":
+            return redirect(url_for('.account', name=accountname, number=accountnumber))
     return render_template('accountprompt.html', name=accountname, number=accountnumber)
 
 @app.route('/account/', methods=['GET','POST'])
