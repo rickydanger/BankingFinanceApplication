@@ -27,28 +27,28 @@ class AccountDatabase:
 	def getNumber(accountName,accountDOB):
 		"""This function will take the accountHolderName(column 2) and accountHolderDOB(column 3) and return the accountNumber(column 1) for use by EmployeeInput to allow access without the account Number"""
 		accountNumber = -1
+		error = None
 		with open(databasePath, newline='') as csvfile:
 			database = csv.DictReader(csvfile, delimiter=',')
 			for row in database:
 				if (accountName == row['accountHolderName']) and (accountDOB == row['accountHolderDOB']):
 					accountNumber = row['accountNumber']
 		if accountNumber == -1:
-			print("This is an error, Alert employee that holder name date of birth pair does not match an account")
-		else:
-			return accountNumber
+			error = "This is an error, Alert employee that holder name date of birth pair does not match an account"
+		return accountNumber, error
 
 	def getHolder(accountNumber):
 		"""This function will take the accountNumber(column 1) and return the accountHolderName(column 2) to the EmployeeInput to be displayed to the employee"""
 		accountName = -1
+		error = None
 		with open(databasePath, newline='') as csvfile:
 			database = csv.DictReader(csvfile, delimiter=',')
 			for row in database:
 				if accountNumber == row['accountNumber']:
 					accountName = row['accountHolderName']
 		if accountName == -1:
-			print("This is an error, Alert employee that account number does not exist")
-		else:
-			return accountName
+			error = "This is an error, Alert employee that account number does not exist"
+		return accountName, error
 
 	def getBalance(accountNumber):
 		"""This function will take the accountNumber(column 1) and return the currentBalance(column 5) of the account"""

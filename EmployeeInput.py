@@ -31,13 +31,24 @@ def accountlookup():
         lname = request.form["lname"]
         dob = request.form["dob"]
         accountnumber = request.form["accountnumber"]
+        error = None
+
         if fname != '' and lname != '' and dob != '':
             accountname = fname + " " + lname
-            accountnumber = AccountDatabase.getNumber(accountname, dob)
-            return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
+            data = AccountDatabase.getNumber(accountname, dob)
+            accountnumber = data[0]
+            error = data[1]
+            if error == None:
+                return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
         if accountnumber != '':
-            accountname = AccountDatabase.getHolder(accountnumber)
-            return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
+            data = AccountDatabase.getHolder(accountnumber)
+            accountname = data[0]
+            error = data[1]
+            if error == None:
+                return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
+        if error == None:
+            error = "You missed one or more forms"
+        flash(error)
 
     return render_template('account_look_up.html')
 
