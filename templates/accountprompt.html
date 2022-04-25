@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+{% block content1 %}
+    {% if name %}
+        <center>
+            <h4><font face="Times New Roman" color="#000000">Account Name: {{ name }}</h4>
+            <h4><font face="Times New Roman" color="#000000">Account Number: {{ number }}</h4>
+            <p>Is the account holder information above correct?</p>
+            <table class="center">
+            <tr>
+                <td colspan='2'><button onclick="window.location.href='http://127.0.0.1:5000/accountlookup/';">No</button></td>
+                <form method="post">
+                    <td colspan='2'><input type="submit" value="Yes"></td>
+                </form>
+            </tr>
+                </table>
+        </center>
+    {% endif %}
+{% endblock %}

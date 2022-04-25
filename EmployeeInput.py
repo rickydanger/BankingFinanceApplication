@@ -32,15 +32,23 @@ def accountlookup():
         dob = request.form["dob"]
         if fname != '' and lname != '' and dob != '':
             accountname = fname + " " + lname
-            result = AccountDatabase.getNumber(accountname, dob)
-            return redirect(url_for("account"))
-
+            accountnumber = AccountDatabase.getNumber(accountname, dob)
+            return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
     return render_template('account_look_up.html')
 
+@app.route('/accountprompt/', methods=['GET','POST'])
+def accountprompt():
+    accountname = request.args['name']
+    accountnumber = request.args['number']
+    if request.method == "POST":
+        return redirect(url_for('.account', name=accountname, number=accountnumber))
+    return render_template('accountprompt.html', name=accountname, number=accountnumber)
 
 @app.route('/account/', methods=['GET','POST'])
 def account():
-    return render_template('account.html')
+    accountname = request.args['name']
+    accountnumber = request.args['number']
+    return render_template('account.html', name=accountname, number=accountnumber)
 
 if __name__ == "__main__":
     app.run(debug=True)

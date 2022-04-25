@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
 {% block content1 %}
-<center>
-    <h2>Home page</h2>
-    <p>
-      Welcome
-    </p>
-</center>
+    {% if name %}
+        <center>
+            <p><font face="Times New Roman" color="#000000">Account Name: {{ name }}</p>
+            <p><font face="Times New Roman" color="#000000">Account Number: {{ number }}</p>
+        </center>
+    {% endif %}
 {% endblock %}
