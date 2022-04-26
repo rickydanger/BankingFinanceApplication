@@ -1,10 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
 {% block content1 %}
+<table class="center" width="250" >
+    <form method="post">
+    <tr align"center">
+        <td>Employee:</td>
+        <td>{{employee_name}}</td>
+        <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+    </tr>
+</table>
+<table class="center" width="750">
+    <form method="post">
+    <tr align"center">
+        <td>Account Holder: {{account_name}}</td>
+        <td>Account Number: {{account_number}}</td>
+        <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account" formaction="/switch_account"></td>
+    </tr>
+    </form>
+</table>
+{% endblock %}
+{% block content2 %}
     {% if name %}
-        <center>
-            <p><font face="Times New Roman" color="#000000">Account Name: {{ name }}</p>
-            <p><font face="Times New Roman" color="#000000">Account Number: {{ number }}</p>
-        </center>
+<center>
+    <p><font face="Times New Roman" color="#000000">Account Name: {{ name }}</p>
+    <p><font face="Times New Roman" color="#000000">Account Number: {{ number }}</p>
+</center>
     {% endif %}
 {% endblock %}

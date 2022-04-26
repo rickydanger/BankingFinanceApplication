@@ -10,6 +10,8 @@ app = Flask('GRJ Credit Union')
 app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%r7kw""YC+zh' \
                  b'T"CQRE]r;K;&#a2fe9vf\\%#)8L;8gd^7FU!eGQ,$!%azwAy>Td&nsJ.a"a'
 
+currentAccountName = None
+currentAccountNumber = None
 @app.route('/')
 def index():
     return redirect(url_for("login"))
@@ -25,6 +27,11 @@ def login():
             flash(auth_info[1])
 
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET','POST'])
+def logout():
+    session["username"] = None
+    return redirect(url_for('login'))
 
 @app.route('/accountlookup/', methods=['GET','POST'])
 def accountlookup():
@@ -56,7 +63,7 @@ def accountlookup():
             error = "You missed one or more forms"
         flash(error)
 
-    return render_template('account_look_up.html')
+    return render_template('account_look_up.html', employee_name=session.get("username"), account_name=currentAccountName, account_number=currentAccountNumber)
 
 @app.route('/accountprompt/', methods=['GET','POST'])
 def accountprompt():
@@ -73,7 +80,7 @@ def accountprompt():
 def account():
     accountname = request.args['name']
     accountnumber = request.args['number']
-    return render_template('account.html', name=accountname, number=accountnumber)
+    return render_template('account.html', employee_name=session.get("username"), account_name=accountname, account_number=accountnumber)
 
 if __name__ == "__main__":
     app.run(debug=True)
