@@ -10,8 +10,9 @@ app = Flask('GRJ Credit Union')
 app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%r7kw""YC+zh' \
                  b'T"CQRE]r;K;&#a2fe9vf\\%#)8L;8gd^7FU!eGQ,$!%azwAy>Td&nsJ.a"a'
 
-currentAccountName = None
-currentAccountNumber = None
+currentAccountName = ""
+currentAccountNumber = ""
+
 @app.route('/')
 def index():
     return redirect(url_for("login"))
@@ -33,11 +34,20 @@ def logout():
     session["username"] = None
     return redirect(url_for('login'))
 
+@app.route('/switchaccount', methods=['GET','POST'])
+def switchaccount():
+    global currentAccountName, currentAccountNumber
+    currentAccountName = "noname"
+    currentAccountNumber = "nonumber"
+    return redirect(url_for("accountlookup"))
+    
+
 @app.route('/accountlookup/', methods=['GET','POST'])
 def accountlookup():
     if not session.get("username"):
         return redirect(url_for('login'))
     elif request.method == "POST":
+        global currentAccountName, currentAccountNumber
         fname = request.form["fname"]
         lname = request.form["lname"]
         dob = request.form["dob"]
@@ -50,7 +60,9 @@ def accountlookup():
             accountnumber = data[0]
             error = data[1]
             if error == None:
-                return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
+                currentAccountName = accountname
+                currentAccountNumber = accountnumber
+                return redirect(url_for("accountprompt"))
         elif (accountnumber !='' and len(accountnumber) != 6):
             error = "account number is not the correct length"
         elif (accountnumber != ''):
@@ -58,29 +70,32 @@ def accountlookup():
             accountname = data[0]
             error = data[1]
             if error == None:
-                return redirect(url_for('.accountprompt', name=accountname, number=accountnumber))
+                currentAccountName = accountname
+                currentAccountNumber = accountnumber
+                return redirect(url_for("accountprompt", name=currentAccountName, number=currentAccountNumber))
         if error == None:
             error = "You missed one or more forms"
         flash(error)
 
-    return render_template('account_look_up.html', employee_name=session.get("username"), account_name=currentAccountName, account_number=currentAccountNumber)
+    return render_template('account_look_up.html', employee_name=session.get("username"))
 
 @app.route('/accountprompt/', methods=['GET','POST'])
 def accountprompt():
     if not session.get("username"):
         return redirect(url_for('login'))
     else:
-        accountname = request.args['name']
-        accountnumber = request.args['number']
+        global currentAccountName, currentAccountNumber
         if request.method == "POST":
-            return redirect(url_for('.account', name=accountname, number=accountnumber))
-    return render_template('accountprompt.html', name=accountname, number=accountnumber)
+            return redirect(url_for("account"))
+    return render_template('accountprompt.html', name=currentAccountName, number=currentAccountNumber)
 
-@app.route('/account/', methods=['GET','POST'])
+@app.route('/account', methods=['GET','POST'])
 def account():
-    accountname = request.args['name']
-    accountnumber = request.args['number']
-    return render_template('account.html', employee_name=session.get("username"), account_name=accountname, account_number=accountnumber)
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    
+    global currentAccountName, currentAccountNumber
+    return render_template('account.html', employee_name=session.get("username"), account_name=currentAccountName, account_number = currentAccountNumber)
 
 if __name__ == "__main__":
     app.run(debug=True)
