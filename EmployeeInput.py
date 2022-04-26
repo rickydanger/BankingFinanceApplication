@@ -10,8 +10,8 @@ app = Flask('GRJ Credit Union')
 app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%r7kw""YC+zh' \
                  b'T"CQRE]r;K;&#a2fe9vf\\%#)8L;8gd^7FU!eGQ,$!%azwAy>Td&nsJ.a"a'
 
-currentAccountName = ""
-currentAccountNumber = ""
+currentAccountName = None
+currentAccountNumber = None
 
 @app.route('/')
 def index():
@@ -37,8 +37,8 @@ def logout():
 @app.route('/switchaccount', methods=['GET','POST'])
 def switchaccount():
     global currentAccountName, currentAccountNumber
-    currentAccountName = "noname"
-    currentAccountNumber = "nonumber"
+    currentAccountName = None
+    currentAccountNumber = None
     return redirect(url_for("accountlookup"))
     
 
@@ -72,7 +72,7 @@ def accountlookup():
             if error == None:
                 currentAccountName = accountname
                 currentAccountNumber = accountnumber
-                return redirect(url_for("accountprompt", name=currentAccountName, number=currentAccountNumber))
+                return redirect(url_for("accountprompt"))
         if error == None:
             error = "You missed one or more forms"
         flash(error)
@@ -91,10 +91,11 @@ def accountprompt():
 
 @app.route('/account', methods=['GET','POST'])
 def account():
+    global currentAccountName, currentAccountNumber
     if not session.get("username"):
         return redirect(url_for('login'))
-    
-    global currentAccountName, currentAccountNumber
+    elif currentAccountName == None or currentAccountNumber == None:
+        return redirect(url_for("accountlookup"))
     return render_template('account.html', employee_name=session.get("username"), account_name=currentAccountName, account_number = currentAccountNumber)
 
 if __name__ == "__main__":
