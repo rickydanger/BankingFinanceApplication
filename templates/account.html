@@ -1,29 +1,65 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
 {% block content1 %}
-<table class="center" width="250" >
+<style>
+table {
+  font-family: times new roman, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: #dddddd;
+}
+
+tr:nth-child(even) {
+  background-color: #B2BBFF;
+}
+</style>
+<table class="center" width="200" >
     <form method="post">
-    <tr align"center">
-        <td>Employee:</td>
-        <td>{{employee_name}}</td>
-        <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
-    </tr>
-</table>
-<table class="center" width="750">
-    <form method="post">
-    <tr align"center">
-        <td>Account Holder: {{account_name}}</td>
-        <td>Account Number: {{account_number}}</td>
-        <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account" formaction="/switchaccount"></td>
-    </tr>
+        <tr align"center">
+            <td>Employee:</td>
+            <td>{{employee_name}}</td>
+            <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+        </tr>
     </form>
 </table>
-{% endblock %}
-{% block content2 %}
-    {% if name %}
-<center>
-    <p><font face="Times New Roman" color="#000000">Account Name: {{ name }}</p>
-    <p><font face="Times New Roman" color="#000000">Account Number: {{ number }}</p>
-</center>
-    {% endif %}
+<br>
+<table class="center" width="500" >
+    <form method="post">
+        <tr align"center">
+            <td>Account Holder:</td>
+            <td>{{account_name}}</td>
+            <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account" formaction="/switchaccount"></td>
+        </tr >
+        <tr >
+            <td>Account Number:</td>
+            <td>{{account_number}}</td>
+        </tr>
+    </form>
+        <tr align"center">
+            <td>Account Balance:</td>
+            <td>${{account_balance}}</td>
+        </tr>
+</table>
+<br>
+<table class="center" width="600" >
+    <tr align"center">
+        <th>Date</th>
+        <th>Transfer</th>
+        <th>Transfer Amount</th>
+        <th>Account Value</th>
+    </tr>
+    <tr align"center">
+        {{account_history|safe}}
+    </tr>
+</table>
+
+
 {% endblock %}
