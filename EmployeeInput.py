@@ -114,7 +114,7 @@ def formatHistory(historyString):
         for x in range(0, 4):
             historyArray.pop(0)
         currentAccountHistory = historyString + currentAccountHistory
-        return currentAccountHistory
+    return currentAccountHistory
 
 if __name__ == "__main__":
     app.run(debug=True)
