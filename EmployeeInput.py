@@ -97,21 +97,24 @@ def account():
     elif currentAccountName == None or currentAccountNumber == None:
         return redirect(url_for("accountlookup"))
     currentAccountBalance = AccountDatabase.getBalance(currentAccountNumber)
-    historyString = AccountDatabase.getHistory(currentAccountNumber)
+    currentAccountHistory = formatHistory(AccountDatabase.getHistory(currentAccountNumber))
+
+    return render_template('account.html', employee_name=session.get("username"), account_name=currentAccountName,
+                           account_number = currentAccountNumber, account_balance = currentAccountBalance,
+                           account_history = currentAccountHistory)
+
+def formatHistory(historyString):
     historyArray = historyString.split(';')
     historyString = ""
     currentAccountHistory = ""
 
     while len(historyArray) != 0:
-        for x in range (0,4):
+        for x in range(0, 4):
             historyString = historyString + "<td>" + historyArray[x] + "</td>"
         for x in range(0, 4):
             historyArray.pop(0)
         currentAccountHistory = historyString + currentAccountHistory
-
-    return render_template('account.html', employee_name=session.get("username"), account_name=currentAccountName,
-                           account_number = currentAccountNumber, account_balance = currentAccountBalance,
-                           account_history = currentAccountHistory)
+        return currentAccountHistory
 
 if __name__ == "__main__":
     app.run(debug=True)
