@@ -109,13 +109,9 @@ def account():
             historyArray.pop(0)
         currentAccountHistory = historyString + currentAccountHistory
 
-    a = '<td>AA</td>'
-
-
-
     return render_template('account.html', employee_name=session.get("username"), account_name=currentAccountName,
                            account_number = currentAccountNumber, account_balance = currentAccountBalance,
-                           account_history = currentAccountHistory, a = a)
+                           account_history = currentAccountHistory)
 
 if __name__ == "__main__":
     app.run(debug=True)
