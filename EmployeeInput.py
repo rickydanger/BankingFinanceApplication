@@ -11,6 +11,9 @@ app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%
 currentAccountName = None
 currentAccountNumber = None
 
+AccountDatabase.startTimer()
+#AccountDatabase.checkTimes()
+
 @app.route('/')
 def index():
     return redirect(url_for("login"))
@@ -101,7 +104,12 @@ def account():
         if deposit != '':
             AccountDatabase.makeDeposit(currentAccountNumber, deposit)
         if withdraw != '':
-            AccountDatabase.makeWithdrawal(currentAccountNumber, withdraw)
+            data = AccountDatabase.makeWithdrawal(currentAccountNumber, withdraw)
+            error = data[1]
+            if error == None:
+                return redirect(url_for("account"))
+            else:
+                flash(error)
         return redirect(url_for("account"))
 
 
@@ -126,7 +134,7 @@ def formatHistory(historyString):
     return currentAccountHistory
 
 @app.route('/forceinterest', methods=['GET','POST'])
-def forceinsterest():
+def forceinterest():
     AccountDatabase.makeInterestPayments()
     return redirect(url_for("account"))
 

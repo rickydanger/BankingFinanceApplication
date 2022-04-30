@@ -1,3 +1,4 @@
 accountNumber,accountHolderName,accountHolderDOB,accountType,accountBalance,accountAverageBalance,accountHistory
-100001,John Menter,1/1/1990,1,10856.30,0,04/30;Interest Payment;11.30;10856.30:04/23;In Bank Deposit;500.0;10845.0:04/23;In Bank Deposit;10345.00;10345.00
-100002,Garrick Macas,2/2/1991,0,12381.00,0,04/30;Interest Payment;0.00;12381.00:04/30;In Bank Deposit;23.0;12381.0:04/30;In Bank Withdrawal;13.0;12358.0:04/30;In Bank Deposit;11.0;12371.0:04/29;In Bank Deposit;10.0;12360.0:04/29;In Bank Deposit;5;12350.0:04/23;In Bank Deposit;12345.00;12345.00
+100001,John Menter,01/01/1990,1,10845.00,10483.50,04/01;In Bank Deposit;$500.0;$10845.0:04/01;In Bank Deposit;$10345.00;$10345.00
+100002,Garick Macas,02/02/1991,0,12845.00,11933.50,04/30;In Bank Withdrawal;$-25.68;$12845.00:04/30;In Bank Deposit;$525.68;$12870.68:04/01;In Bank Deposit;$12345.00;$12345.00
+100003,Gunuk Park,03/03/1992,1,11111.00,10740.44,04/01;In Bank Deposit;$11111.00;$11111.00

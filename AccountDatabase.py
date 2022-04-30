@@ -2,13 +2,15 @@
 
 import csv
 import fileinput
-from datetime import datetime
+from datetime import datetime, timedelta, date, time
+import threading
+import time
 
 databasePath = "Accounts\Accounts.csv"
 savingRate = 3 #3% interest rate for savings Accounts
 checkingRate = 1.25 #1.25% interest rate for checking Accounts
 daysInMonth = 30 #days in the month will need to be updated after the interest has been paid each month
-now = datetime.now()
+storedTime = datetime.now()
 class AccountDatabase:
 	def getNumber(accountName,accountDOB):
 		"""This function will take the accountHolderName(column 2) and accountHolderDOB(column 3) and return the accountNumber(column 1) for use by EmployeeInput to allow access without the account Number"""
@@ -51,7 +53,7 @@ class AccountDatabase:
 			then return the currentBalance(column 5) of the account"""
 		depositAmount = float(depositAmount)
 		newBalance = float(AccountDatabase.getBalance(accountNumber)) + depositAmount
-		newHistory = now.strftime("%m/%d") + ";In Bank Deposit;" + str(depositAmount) + ";" + str(newBalance) + ":"
+		newHistory = storedTime.strftime("%m/%d") + ";In Bank Deposit;$" + str("%.2f" % depositAmount) + ";$" + str("%.2f" % newBalance) + ":"
 		with fileinput.FileInput(databasePath, inplace=True) as csvwrite:
 			for row in csvwrite:
 				data = row.split(',')
@@ -60,7 +62,7 @@ class AccountDatabase:
 						data[1] + "," +
 						data[2] + "," +
 						data[3] + "," +
-						str(newBalance) + "," +
+						str("%.2f" % newBalance) + "," +
 						data[5] + "," +
 						newHistory + data[6], end ='')
 				else:
@@ -72,9 +74,8 @@ class AccountDatabase:
 		withdrawalAmount = float(withdrawalAmount)
 		error = None
 		if float(AccountDatabase.getBalance(accountNumber)) >= withdrawalAmount:
-			print("This account has the required funds")
 			newBalance = float(AccountDatabase.getBalance(accountNumber)) - withdrawalAmount
-			newHistory = now.strftime("%m/%d") + ";In Bank Withdrawal;" + str(withdrawalAmount) + ";" + str(newBalance) + ":"
+			newHistory = storedTime.strftime("%m/%d") + ";In Bank Withdrawal;$-" + str("%.2f" % withdrawalAmount) + ";$" + str("%.2f" % newBalance) + ":"
 			with fileinput.FileInput(databasePath, inplace=True, backup='.bak') as csvwrite:
 				for row in csvwrite:
 					data = row.split(',')
@@ -84,7 +85,7 @@ class AccountDatabase:
 							data[1] + "," +
 							data[2] + "," +
 							data[3] + "," +
-							str(newBalance) + "," +
+							str("%.2f" % newBalance) + "," +
 							data[5] + "," +
 							newHistory + data[6], end ='')
 					else:
@@ -124,7 +125,7 @@ class AccountDatabase:
 						rate = savingsRate
 					interestAmount = float(data[5]) * (rate / 12 / 100)
 					newBalance = float(data[4]) + interestAmount
-					newHistory = now.strftime("%m/%d") + ";Interest Payment;" + str("%.2f" % interestAmount) + ";" + \
+					newHistory = storedTime.strftime("%m/%d") + ";Interest Payment;$" + str("%.2f" % interestAmount) + ";$" + \
 								 str("%.2f" % newBalance) + ":"
 					#Replace the dates here with dates pulled from the timer class or from datetime
 					print(data[0] + "," +
@@ -136,9 +137,38 @@ class AccountDatabase:
 						newHistory + data[6], end ='')
 				else:
 					print(row, end ='')
+	
+	
 	#Update daysInMonth for the averageBalance updates
 	
 	
+	def checkInterest():
+		"""This function will check the time for interest"""
+		global storedTime
+		"""
+		This is to test the functionality of the function
+		change = datetime.now() - storedTime
+		interestTime = timedelta(minutes = 1)
+		if change > interestTime:
+			AccountDatabase.updateAverageBalance()
+			storedTime = datetime.now()""""
+		if storedTime.date() != date.today():
+			AccountDatabase.updateAverageBalance()
+			if storedTime.month() != date.month():
+				AccountDatabase.makeInterestPayments()
+			storedTime = datetime.now()
+	def checkTimes():
+		"""This function will check all the times and loop"""
+		while True:
+			AccountDatabase.checkInterest()
+			time.sleep(5)
+	
+	def startTimer():
+		"""This function will run the timer"""
+		global storedTime
+		storedTime = datetime.now()
+		x = threading.Thread(target=AccountDatabase.checkTimes, args=())
+		x.start()
 	#testing
 
 	#makeInterestPayments()

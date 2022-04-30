@@ -2,47 +2,47 @@
 {% block title %}{% endblock %}
 {% block content1 %}
 <style>
-table {
-  font-family: times new roman, sans-serif;
-  border-collapse: collapse;
-}
+    table {
+        font-family: times new roman, sans-serif;
+        border-collapse: collapse;
+    }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: center;
-  padding: 8px;
-}
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
 
-tr:nth-child(odd) {
-  background-color: #dddddd;
-}
+    tr:nth-child(odd) {
+        background-color: #dddddd;
+    }
 
-tr:nth-child(even) {
-  background-color: #B2BBFF;
-}
+    tr:nth-child(even) {
+        background-color: #B2BBFF;
+    }
 </style>
-<table class="center" width="200" >
+<table class="center" width="200">
     <form method="post">
-        <tr align"center">
-            <td>Employee:</td>
-            <td>{{employee_name}}</td>
-            <td colspan='1'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
-            <td colspan='1'><input class="btn btn-default" type="submit" value="Switch Account Holder" formaction="/switchaccount"></td>
-            <td colspan='1'><input class="btn btn-default" type="submit" value="Force Interest Payment" formaction="/forceinterest"></td>
-        </tr>
+    <tr align"center">
+        <td>Employee:</td>
+        <td>{{employee_name}}</td>
+        <td colspan='1'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+        <td colspan='1'><input class="btn btn-default" type="submit" value="Switch Account Holder" formaction="/switchaccount"></td>
+        <td colspan='1'><input class="btn btn-default" type="submit" value="Force Interest Payment" formaction="/forceinterest"></td>
+    </tr>
     </form>
 </table>
 <br>
-<table class="center" width="350" >
+<table class="center" width="350">
     <form method="post">
-        <tr align"center">
-            <td>Account Holder:</td>
-            <td>{{account_name}}</td>
-        </tr >
-        <tr >
-            <td>Account Number:</td>
-            <td>{{account_number}}</td>
-        </tr>
+    <tr align"center">
+        <td>Account Holder:</td>
+        <td>{{account_name}}</td>
+    </tr>
+    <tr>
+        <td>Account Number:</td>
+        <td>{{account_number}}</td>
+    </tr>
     </form>
     <tr align"center">
         <td>Account Balance:</td>
@@ -65,7 +65,7 @@ tr:nth-child(even) {
     </table>
 </form>
 <br>
-<table class="center" width="650" >
+<table class="center" width="650">
     <tr align"center">
         <th>Date</th>
         <th>Transfer</th>
@@ -74,4 +74,13 @@ tr:nth-child(even) {
     </tr>
     {{account_history|safe}}
 </table>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+<center>
+    <p style="color:red;">{{msg}}</p>
+</center>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 {% endblock %}
