@@ -2,6 +2,7 @@
 
 import csv
 import fileinput
+import calendar
 from datetime import datetime, timedelta, date, time
 import threading
 import time
@@ -9,8 +10,8 @@ import time
 databasePath = "Accounts\Accounts.csv"
 savingRate = 3 #3% interest rate for savings Accounts
 checkingRate = 1.25 #1.25% interest rate for checking Accounts
-daysInMonth = 30 #days in the month will need to be updated after the interest has been paid each month
 storedTime = datetime.now()
+daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1] #days in the month will need to be updated after the interest has been paid each month
 class AccountDatabase:
 	def getNumber(accountName,accountDOB):
 		"""This function will take the accountHolderName(column 2) and accountHolderDOB(column 3) and return the accountNumber(column 1) for use by EmployeeInput to allow access without the account Number"""
@@ -144,19 +145,23 @@ class AccountDatabase:
 	
 	def checkInterest():
 		"""This function will check the time for interest"""
-		global storedTime
+		global storedTime, daysInMonth
 		"""
 		This is to test the functionality of the function
 		change = datetime.now() - storedTime
 		interestTime = timedelta(minutes = 1)
 		if change > interestTime:
 			AccountDatabase.updateAverageBalance()
-			storedTime = datetime.now()""""
-		if storedTime.date() != date.today():
+			storedTime = datetime.now()"""
+		if storedTime.date() != datetime.now().date():
 			AccountDatabase.updateAverageBalance()
-			if storedTime.month() != date.month():
+			if storedTime.month() != datetime.now().month():
+				storedTime = datetime.now()
 				AccountDatabase.makeInterestPayments()
-			storedTime = datetime.now()
+				daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1]
+			else:
+				storedTime = datetime.now()
+
 	def checkTimes():
 		"""This function will check all the times and loop"""
 		while True:
@@ -165,8 +170,9 @@ class AccountDatabase:
 	
 	def startTimer():
 		"""This function will run the timer"""
-		global storedTime
+		global storedTime, daysInMonth
 		storedTime = datetime.now()
+		daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1]
 		x = threading.Thread(target=AccountDatabase.checkTimes, args=())
 		x.start()
 	#testing
