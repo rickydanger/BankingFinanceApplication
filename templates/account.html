@@ -27,27 +27,42 @@ tr:nth-child(even) {
             <td>Employee:</td>
             <td>{{employee_name}}</td>
             <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+            <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account Holder" formaction="/switchaccount"></td>
         </tr>
     </form>
 </table>
 <br>
-<table class="center" width="500" >
+<table class="center" width="350" >
     <form method="post">
         <tr align"center">
             <td>Account Holder:</td>
             <td>{{account_name}}</td>
-            <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account" formaction="/switchaccount"></td>
         </tr >
         <tr >
             <td>Account Number:</td>
             <td>{{account_number}}</td>
         </tr>
     </form>
-        <tr align"center">
-            <td>Account Balance:</td>
-            <td>${{account_balance}}</td>
-        </tr>
+    <tr align"center">
+        <td>Account Balance:</td>
+        <td>${{account_balance}}</td>
+    </tr>
 </table>
+<br>
+<form method="post">
+    <table class="center">
+        <tr>
+            <td><label for="deposit">Deposit</label></td>
+            <td><input name="deposit" id="deposit"></td>
+            <td colspan='1'><input type="submit" value="Confirm"></td>
+        </tr>
+        <tr>
+            <td><label for="withdraw">Withdraw</label></td>
+            <td><input name="withdraw" id="withdraw"></td>
+            <td colspan='1'><input type="submit" value="Confirm"></td>
+        </tr>
+    </table>
+</form>
 <br>
 <table class="center" width="600" >
     <tr align"center">
@@ -56,10 +71,6 @@ tr:nth-child(even) {
         <th>Transfer Amount</th>
         <th>Account Value</th>
     </tr>
-    <tr align"center">
-        {{account_history|safe}}
-    </tr>
+    {{account_history|safe}}
 </table>
-
-
 {% endblock %}

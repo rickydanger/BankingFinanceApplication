@@ -49,7 +49,8 @@ class AccountDatabase:
 	def makeDeposit(accountNumber,depositAmount):
 		"""This function will take the accountNumber(column 1) and depositAmount, It will add the depositAmount to the currentBalance, record the transaction in the accountHistory(Column 7)
 			then return the currentBalance(column 5) of the account"""
-		newBalance = float(getBalance(accountNumber)) + depositAmount
+		depositAmount = float(depositAmount)
+		newBalance = float(AccountDatabase.getBalance(accountNumber)) + depositAmount
 		newHistory = now.strftime("%m/%d") + ";In Bank Deposit;" + str(depositAmount) + ";" + str(newBalance) + ":"
 		with fileinput.FileInput(databasePath, inplace=True) as csvwrite:
 			for row in csvwrite:
@@ -64,7 +65,7 @@ class AccountDatabase:
 						newHistory + data[6], end ='')
 				else:
 					print(row, end ='')
-		return getBalance(accountNumber)
+		return AccountDatabase.getBalance(accountNumber)
 
 	def makeWithdrawal(accountNumber,withdrawalAmount):
 		"""This function will take the accountNumber(column 1) and withdrawalAmount, It will check for sufficient funds then subtract the depositAmount from the currentBalance	record the transaction in the accountHistory(Column 7) then return the currentBalance(column 5) of the account"""

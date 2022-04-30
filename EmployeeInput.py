@@ -1,7 +1,5 @@
 from flask import Flask, url_for, redirect, render_template, request, flash, session
-#from flask.ext.login import LoginManager
-import datetime
-import string
+import re
 
 from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
@@ -96,6 +94,15 @@ def account():
         return redirect(url_for('login'))
     elif currentAccountName == None or currentAccountNumber == None:
         return redirect(url_for("accountlookup"))
+
+    if request.method == "POST":
+        deposit = request.form["deposit"]
+        withdraw = request.form["withdraw"]
+        if deposit != '':
+            AccountDatabase.makeDeposit(currentAccountNumber, deposit)
+            return redirect(url_for("account"))
+
+
     currentAccountBalance = AccountDatabase.getBalance(currentAccountNumber)
     currentAccountHistory = formatHistory(AccountDatabase.getHistory(currentAccountNumber))
 
@@ -104,16 +111,16 @@ def account():
                            account_history = currentAccountHistory)
 
 def formatHistory(historyString):
-    historyArray = historyString.split(';')
-    historyString = ""
+    historyArray = re.split(';|:', historyString)
     currentAccountHistory = ""
 
     while len(historyArray) != 0:
+        historyString = ""
         for x in range(0, 4):
             historyString = historyString + "<td>" + historyArray[x] + "</td>"
         for x in range(0, 4):
             historyArray.pop(0)
-        currentAccountHistory = historyString + currentAccountHistory
+        currentAccountHistory = currentAccountHistory + "<tr align\"center\">" + historyString + "</tr>"
     return currentAccountHistory
 
 if __name__ == "__main__":
