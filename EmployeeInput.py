@@ -100,7 +100,9 @@ def account():
         withdraw = request.form["withdraw"]
         if deposit != '':
             AccountDatabase.makeDeposit(currentAccountNumber, deposit)
-            return redirect(url_for("account"))
+        if withdraw != '':
+            AccountDatabase.makeWithdrawal(currentAccountNumber, withdraw)
+        return redirect(url_for("account"))
 
 
     currentAccountBalance = AccountDatabase.getBalance(currentAccountNumber)
@@ -122,6 +124,11 @@ def formatHistory(historyString):
             historyArray.pop(0)
         currentAccountHistory = currentAccountHistory + "<tr align\"center\">" + historyString + "</tr>"
     return currentAccountHistory
+
+@app.route('/forceinterest', methods=['GET','POST'])
+def forceinsterest():
+    AccountDatabase.makeInterestPayments()
+    return redirect(url_for("account"))
 
 if __name__ == "__main__":
     app.run(debug=True)

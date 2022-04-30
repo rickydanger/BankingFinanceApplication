@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home page{% endblock %}
+{% block title %}{% endblock %}
 {% block content1 %}
 <style>
 table {
@@ -26,8 +26,9 @@ tr:nth-child(even) {
         <tr align"center">
             <td>Employee:</td>
             <td>{{employee_name}}</td>
-            <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
-            <td colspan='2'><input class="btn btn-default" type="submit" value="Switch Account Holder" formaction="/switchaccount"></td>
+            <td colspan='1'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+            <td colspan='1'><input class="btn btn-default" type="submit" value="Switch Account Holder" formaction="/switchaccount"></td>
+            <td colspan='1'><input class="btn btn-default" type="submit" value="Force Interest Payment" formaction="/forceinterest"></td>
         </tr>
     </form>
 </table>
@@ -64,7 +65,7 @@ tr:nth-child(even) {
     </table>
 </form>
 <br>
-<table class="center" width="600" >
+<table class="center" width="650" >
     <tr align"center">
         <th>Date</th>
         <th>Transfer</th>

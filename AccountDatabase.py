@@ -69,10 +69,11 @@ class AccountDatabase:
 
 	def makeWithdrawal(accountNumber,withdrawalAmount):
 		"""This function will take the accountNumber(column 1) and withdrawalAmount, It will check for sufficient funds then subtract the depositAmount from the currentBalance	record the transaction in the accountHistory(Column 7) then return the currentBalance(column 5) of the account"""
+		withdrawalAmount = float(withdrawalAmount)
 		error = None
-		if float(getBalance(accountNumber)) >= withdrawalAmount:
+		if float(AccountDatabase.getBalance(accountNumber)) >= withdrawalAmount:
 			print("This account has the required funds")
-			newBalance = float(getBalance(accountNumber)) - withdrawalAmount
+			newBalance = float(AccountDatabase.getBalance(accountNumber)) - withdrawalAmount
 			newHistory = now.strftime("%m/%d") + ";In Bank Withdrawal;" + str(withdrawalAmount) + ";" + str(newBalance) + ":"
 			with fileinput.FileInput(databasePath, inplace=True, backup='.bak') as csvwrite:
 				for row in csvwrite:
@@ -90,7 +91,7 @@ class AccountDatabase:
 						print(row, end ='')
 		else:
 			error = "This account does not have the required funds"
-		return getBalance(accountNumber), error
+		return AccountDatabase.getBalance(accountNumber), error
 
 	#Interest Functions
 
@@ -112,18 +113,19 @@ class AccountDatabase:
 					print(row, end ='')
 
 	def makeInterestPayments():
-		"""This function will loop through the accounts and add interest based on the interest rate of the account type and the accounts average balance for the month"""
+		"""This function will loop through the accounts and add interest based on the interest rate of the account type
+		and the accounts average balance for the month"""
 		with fileinput.FileInput(databasePath, inplace=True) as csvwrite:
 			for row in csvwrite:
 				data = row.split(',')
 				if data[0] != "accountNumber":
 					rate = checkingRate
-
 					if data[3] == 1: # Savings
 						rate = savingsRate
 					interestAmount = float(data[5]) * (rate / 12 / 100)
 					newBalance = float(data[4]) + interestAmount
-					newHistory = now.strftime("%m/%d") + ";Interest Payment;" + str("%.2f" % interestAmount) + ";" + str("%.2f" % newBalance) + ":"
+					newHistory = now.strftime("%m/%d") + ";Interest Payment;" + str("%.2f" % interestAmount) + ";" + \
+								 str("%.2f" % newBalance) + ":"
 					#Replace the dates here with dates pulled from the timer class or from datetime
 					print(data[0] + "," +
 						data[1] + "," +
