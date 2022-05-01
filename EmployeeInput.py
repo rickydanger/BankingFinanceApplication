@@ -1,5 +1,6 @@
 from flask import Flask, url_for, redirect, render_template, request, flash, session
 import re
+from datetime import timedelta
 
 from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
@@ -7,12 +8,12 @@ from EmployeeAuthentication import EmployeeAuthentication
 app = Flask('GRJ Credit Union')
 app.secret_key = b'D=%C/zsY-P>wK5TwyL\\&Mu"/>r(}K@D~&z@8BmpL!,H\"\'Q`*VjZ]e^"6C%r7kw""YC+zh' \
                  b'T"CQRE]r;K;&#a2fe9vf\\%#)8L;8gd^7FU!eGQ,$!%azwAy>Td&nsJ.a"a'
+app.permanent_session_lifetime = timedelta(minutes=5)
 
 currentAccountName = None
 currentAccountNumber = None
 
 AccountDatabase.startTimer()
-#AccountDatabase.checkTimes()
 
 @app.route('/')
 def index():
@@ -137,6 +138,7 @@ def formatHistory(historyString):
 def forceinterest():
     AccountDatabase.makeInterestPayments()
     return redirect(url_for("account"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

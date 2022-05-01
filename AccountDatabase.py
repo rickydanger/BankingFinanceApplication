@@ -7,11 +7,14 @@ from datetime import datetime, timedelta, date, time
 import threading
 import time
 
+
 databasePath = "Accounts\Accounts.csv"
 savingRate = 3 #3% interest rate for savings Accounts
 checkingRate = 1.25 #1.25% interest rate for checking Accounts
 storedTime = datetime.now()
 daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1] #days in the month will need to be updated after the interest has been paid each month
+
+
 class AccountDatabase:
 	def getNumber(accountName,accountDOB):
 		"""This function will take the accountHolderName(column 2) and accountHolderDOB(column 3) and return the accountNumber(column 1) for use by EmployeeInput to allow access without the account Number"""
@@ -139,9 +142,7 @@ class AccountDatabase:
 				else:
 					print(row, end ='')
 	
-	
 	#Update daysInMonth for the averageBalance updates
-	
 	
 	def checkInterest():
 		"""This function will check the time for interest"""
@@ -163,7 +164,7 @@ class AccountDatabase:
 				storedTime = datetime.now()
 
 	def checkTimes():
-		"""This function will check all the times and loop"""
+		"""This function will check the time and loop"""
 		while True:
 			AccountDatabase.checkInterest()
 			time.sleep(5)
@@ -171,10 +172,9 @@ class AccountDatabase:
 	def startTimer():
 		"""This function will run the timer"""
 		global storedTime, daysInMonth
-		storedTime = datetime.now()
-		daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1]
 		x = threading.Thread(target=AccountDatabase.checkTimes, args=())
 		x.start()
+	
 	#testing
 
 	#makeInterestPayments()
