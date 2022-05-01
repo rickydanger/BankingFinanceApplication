@@ -1,6 +1,7 @@
 from flask import Flask, url_for, redirect, render_template, request, flash, session
 import re
 from datetime import timedelta
+import time
 
 from AccountDatabase import AccountDatabase
 from EmployeeAuthentication import EmployeeAuthentication
@@ -104,10 +105,12 @@ def account():
         withdraw = request.form["withdraw"]
         if deposit != '':
             AccountDatabase.makeDeposit(currentAccountNumber, deposit)
+            flash("Deposit of $" + str("%.2f" % float(deposit)) + " was successful")
         if withdraw != '':
             data = AccountDatabase.makeWithdrawal(currentAccountNumber, withdraw)
             error = data[1]
             if error == None:
+                flash("Withdrawal of $" + str("%.2f" % float(withdraw)) + " was successful")
                 return redirect(url_for("account"))
             else:
                 flash(error)

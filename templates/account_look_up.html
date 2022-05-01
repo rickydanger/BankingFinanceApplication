@@ -1,59 +1,75 @@
 {% extends "base.html" %}
-{% block title %}Home page{% endblock %}
+{% block title %}Account Lookup{% endblock %}
 {% block content1 %}
-<table class="center">
+<style>
+    table {
+        font-family: times new roman, sans-serif;
+        border-collapse: collapse;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #dddddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #B2BBFF;
+    }
+</style>
+<table class="center" width="200">
     <form method="post">
-        <tr align"center">
-            <td>Employee:  </td>
-            <td>{{employee_name}}</td>
-            <td colspan='2'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
-        </tr>
+    <tr align"center">
+        <td>Employee:</td>
+        <td>{{employee_name}}</td>
+        <td colspan='1'><input class="btn btn-default" type="submit" value="Log Out" formaction="/logout"></td>
+    </tr>
     </form>
 </table>
-{% endblock %}
-{% block content2 %}
-<center>
-    <h2>Account Lookup</h2>
-    <p>Enter the first name, last name, and the date of birth of the account holder.</p>
-    <form method="post">
-        <table class="center">
-            <tr>
-                <td><label for="fname">First Name</label></td>
-                <td><input name="fname" id="fname"></td>
-            </tr>
-            <tr>
-                <td><label for="lname">Last Name</label></td>
-                <td><input name="lname" id="lname"></td>
-            </tr>
-            <tr>
-                <td><label for="dob">Date of Birth</label></td>
-                <td><input name="dob" id="dob"></td>
-            </tr>
-            <tr>
-                <td colspan='2'><input type="submit" value="Lookup Account"></td>
-            </tr>
-        </table>
-        <br>
-        <br>
-        <p>Or enter the account holders account number.</p>
-        <table class="center">
-            <tr>
-                <td><label for="accountnumber">Account Number</label></td>
-                <td><input name="accountnumber" id="accountnumber"></td>
-            </tr>
-            <tr>
-                <td colspan='2'><input type="submit" value="Lookup Account"></td>
-            </tr>
-        </table>
-    </form>
-</center>
+    <center>
+        <h2>Account Lookup</h2>
+        <p>Enter the first name, last name, and the date of birth of the account holder.</p>
+        <form method="post">
+            <table class="center">
+                <tr>
+                    <td><label for="fname">First Name</label></td>
+                    <td><input name="fname" id="fname"></td>
+                </tr>
+                <tr>
+                    <td><label for="lname">Last Name</label></td>
+                    <td><input name="lname" id="lname"></td>
+                </tr>
+                <tr>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><input name="dob" id="dob"></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type="submit" value="Lookup Account"></td>
+                </tr>
+            </table>
+            <p>Or enter the account holders account number.</p>
+            <table class="center">
+                <tr>
+                    <td><label for="accountnumber">Account Number</label></td>
+                    <td><input name="accountnumber" id="accountnumber"></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type="submit" value="Lookup Account"></td>
+                </tr>
+            </table>
+        </form>
+    </center>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-<center>
-    <p style="color:red;">{{msg}}</p>
-</center>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for msg in messages %}
+    <center>
+        <p style="color:red;">{{msg}}</p>
+    </center>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
-{% endblock %}
+    {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
+{% block title %}Account Actions{% endblock %}
 {% block content1 %}
 <style>
     table {
@@ -64,7 +64,17 @@
         </tr>
     </table>
 </form>
-<br>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+<center>
+    <p style="color:red;">{{msg}}</p>
+</center>
+            {% endfor %}
+         {% else %}
+<br><br><br>
+        {% endif %}
+    {% endwith %}
 <table class="center" width="650">
     <tr align"center">
         <th>Date</th>
@@ -74,13 +84,5 @@
     </tr>
     {{account_history|safe}}
 </table>
-{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-<center>
-    <p style="color:red;">{{msg}}</p>
-</center>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+
 {% endblock %}
