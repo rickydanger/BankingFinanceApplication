@@ -144,6 +144,18 @@ class AccountDatabase:
 	
 	#Update daysInMonth for the averageBalance updates
 	
+	def simulateMonth():
+		global storedTime, daysInMonth
+		intDay = storedTime.day
+		while intDay <= (daysInMonth + 1):
+			AccountDatabase.updateAverageBalance()
+			intDay += 1
+		AccountDatabase.makeInterestPayments()
+		intDay = storedTime.day
+		while intDay < 1:
+			updateAverageBalance()
+			intDay -= 1
+
 	def checkInterest():
 		"""This function will check the time for interest"""
 		global storedTime, daysInMonth
