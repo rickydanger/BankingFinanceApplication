@@ -159,16 +159,9 @@ class AccountDatabase:
 	def checkInterest():
 		"""This function will check the time for interest"""
 		global storedTime, daysInMonth
-		"""
-		This is to test the functionality of the function
-		change = datetime.now() - storedTime
-		interestTime = timedelta(minutes = 1)
-		if change > interestTime:
-			AccountDatabase.updateAverageBalance()
-			storedTime = datetime.now()"""
 		if storedTime.date() != datetime.now().date():
 			AccountDatabase.updateAverageBalance()
-			if storedTime.month() != datetime.now().month():
+			if storedTime.month != datetime.now().month:
 				storedTime = datetime.now()
 				AccountDatabase.makeInterestPayments()
 				daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1]
@@ -184,9 +177,5 @@ class AccountDatabase:
 	def startTimer():
 		"""This function will run the timer"""
 		global storedTime, daysInMonth
-		x = threading.Thread(target=AccountDatabase.checkTimes, args=())
-		x.start()
-	
-	#testing
-
-	#makeInterestPayments()
+		timer = threading.Thread(target=AccountDatabase.checkTimes, args=())
+		timer.start()
