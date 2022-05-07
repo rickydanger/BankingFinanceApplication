@@ -9,7 +9,7 @@ import time
 
 
 databasePath = "Accounts\Accounts.csv"
-savingRate = 3 #3% interest rate for savings Accounts
+savingsRate = 3 #3% interest rate for savings Accounts
 checkingRate = 1.25 #1.25% interest rate for checking Accounts
 storedTime = datetime.now()
 daysInMonth = calendar.monthrange(storedTime.year, storedTime.month)[1] #days in the month will need to be updated after the interest has been paid each month
@@ -107,12 +107,13 @@ class AccountDatabase:
 				data = row.split(',')
 				if data[0] != "accountNumber":
 					dailyAmount = float(data[4]) / daysInMonth
+					dailyAmount += float(data[5])
 					print(data[0] + "," +
 						data[1] + "," +
 						data[2] + "," +
 						data[3] + "," +
 						data[4] + "," +
-						str("%.2f" %(float(data[5]) + dailyAmount)) + "," +
+						str("%.2f" %(dailyAmount)) + "," +
 						data[6], end ='')
 				else:
 					print(row, end ='')
@@ -120,12 +121,13 @@ class AccountDatabase:
 	def makeInterestPayments():
 		"""This function will loop through the accounts and add interest based on the interest rate of the account type
 		and the accounts average balance for the month"""
+		global checkingRate, savingsRate
 		with fileinput.FileInput(databasePath, inplace=True) as csvwrite:
 			for row in csvwrite:
 				data = row.split(',')
 				if data[0] != "accountNumber":
 					rate = checkingRate
-					if data[3] == 1: # Savings
+					if data[3] == "1": # Savings
 						rate = savingsRate
 					interestAmount = float(data[5]) * (rate / 12 / 100)
 					newBalance = float(data[4]) + interestAmount
@@ -147,13 +149,13 @@ class AccountDatabase:
 	def simulateMonth():
 		global storedTime, daysInMonth
 		intDay = storedTime.day
-		while intDay <= (daysInMonth + 1):
+		while intDay < (daysInMonth + 1):
 			AccountDatabase.updateAverageBalance()
 			intDay += 1
 		AccountDatabase.makeInterestPayments()
 		intDay = storedTime.day
-		while intDay < 1:
-			updateAverageBalance()
+		while intDay > 1:
+			AccountDatabase.updateAverageBalance()
 			intDay -= 1
 
 	def checkInterest():
