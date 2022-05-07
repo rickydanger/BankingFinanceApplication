@@ -139,7 +139,10 @@ def formatHistory(historyString):
 
 @app.route('/forceinterest', methods=['GET','POST'])
 def forceinterest():
-    AccountDatabase.simulateMonth()
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    elif request.method == "POST":
+        AccountDatabase.simulateMonth()
     return redirect(url_for("account"))
 
 
